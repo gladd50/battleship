@@ -34,3 +34,15 @@ test('cannot Place ship side to side to other ship', () => {
     gb.placeShip(2, 1, 3, 'v')
     expect(gb.placeShip(2, 2, 3, 'v')).toBeFalsy()
 })
+test('Missed a shot', () => {
+    const gb = GameBoard()
+    gb.receiveAttack(0,0)
+    expect(gb.board[0][0]).toBe('X')
+})
+test('Success landed a shot', () => {
+    const gb = GameBoard()
+    gb.placeShip(0, 0, 1, 'h')
+    gb.receiveAttack(0, 0)
+    expect(gb.board[0][0].ship.isHit()).toBeTruthy()
+    expect(gb.board[0][0].ship.hitted).toBe(1)
+})
