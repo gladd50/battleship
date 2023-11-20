@@ -19,6 +19,9 @@ const gameBoard = () => {
             if (idx === -1  ) {
                 board[row].splice(col, 1, 'O')
             }
+            else if(idx === -2){
+                board[row].splice(col, 1, 'O')
+            }
         }
     }
     const placeShip = (row, col, len, dir) => {
