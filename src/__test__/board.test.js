@@ -24,10 +24,26 @@ test('cannot Place ship if there was an existing ship', () => {
     gb.placeShip(2, 1, 3, 'v')
     expect(gb.placeShip(4, 1, 3, 'v')).toBeFalsy()
 })
-test('Occupying tiles around ship', () => {
+test('Occupying tiles around ship v', () => {
     const gb = gameBoard()
     gb.placeShip(2, 1, 3, 'v')
-    expect(gb.board[1][1] && gb.board[3][2] && gb.board[3][0]&& gb.board[5][1]).toBe('O')
+    expect(gb.board[2][0]).toBe('arr')
+})
+test('Occupying tiles around ship [1][2] 3x1 v', () => {
+    const gb = gameBoard()
+    gb.placeShip(1, 2, 3, 'v')
+    expect(gb.board[0][1]).toEqual('arr')
+    expect(gb.board[0][2]).toEqual('arr')
+    expect(gb.board[0][3]).toEqual('arr')
+    expect(gb.board[1][1]).toEqual('arr')
+    expect(gb.board[2][1]).toEqual('arr')
+    expect(gb.board[3][1]).toEqual('arr')
+    expect(gb.board[4][1]).toEqual('arr')
+    expect(gb.board[4][2]).toEqual('arr')
+    expect(gb.board[4][3]).toEqual('arr')
+    expect(gb.board[3][3]).toEqual('arr')
+    expect(gb.board[2][3]).toEqual('arr')
+    expect(gb.board[1][3]).toEqual('arr')
 })
 test('cannot Place ship side to side to other ship', () => {
     const gb = gameBoard()
@@ -55,10 +71,18 @@ test('Success landed a shot', () => {
     expect(gb.board[0][0].ship.isHit()).toBeTruthy()
     expect(gb.board[0][0].ship.hitted).toBe(1)
 })
-test('sinking ship', () => {
+test('sinking ship 1x1', () => {
     const gb = gameBoard()
     gb.placeShip(0, 0, 1, 'h')
     gb.receiveAttack(0, 0)
+    expect(gb.board[0][0].ship.isSunk()).toBeTruthy()
+})
+test('sinking ship 3x1', () => {
+    const gb = gameBoard()
+    gb.placeShip(0, 0, 3, 'h')
+    gb.receiveAttack(0, 0)
+    gb.receiveAttack(0, 1)
+    gb.receiveAttack(0, 2)
     expect(gb.board[0][0].ship.isSunk()).toBeTruthy()
 })
 test('not sinking ship', () => {
@@ -92,3 +116,20 @@ test('not sinking all the ships', () => {
     gb.placeShip(9, 6, 1, 'h')
     expect(gb.isOver()).toBeTruthy()
 })
+test('ship sink collaterall 1x1 [0][0]', () => {
+    const gb = gameBoard()
+    gb.placeShip(0, 0, 1, 'h')
+    expect(gb.board[0][1] && gb.board[1][0] && gb.board[1][1]).toBe('O')
+    gb.receiveAttack(0, 0)
+    expect(gb.board[0][1] && gb.board[1][0] && gb.board[1][1]).toBe('X')
+})
+test('ship sink collaterall 3x1 [1][2] v', () => {
+    const gb = gameBoard()
+    gb.placeShip(1, 2, 3, 'v')
+    expect(gb.board[0][1] && gb.board[0][2] && gb.board[0][3] && gb.board[1][1] && gb.board[2][1]  && gb.board[3][1] && gb.board[4][1] && gb.board[4][2] && gb.board[4][3] && gb.board[3][3] && gb.board[2][3] && gb.board[1][3] ).toBe('O')
+    gb.receiveAttack(1, 2)
+    gb.receiveAttack(2, 2)
+    gb.receiveAttack(3, 2)
+    expect(gb.board[0][1] && gb.board[0][2] && gb.board[0][3] && gb.board[1][1] && gb.board[2][1]  && gb.board[3][1] && gb.board[4][1] && gb.board[4][2] && gb.board[4][3] && gb.board[3][3] && gb.board[2][3] && gb.board[1][3] ).toBe('X')
+})
+

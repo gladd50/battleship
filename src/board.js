@@ -9,18 +9,30 @@ const gameBoard = () => {
         }
     }
     const aroundShip = (row, col, dir, idx) => {
-        if (dir === 'v' ) {
-            if (board[row][col - 1]) {
-                board[row].splice(col - 1, 1, 'O')
+        if (dir === 'v') {
+            if (idx === -1 || idx === -2) {
+              console.log(row)
+                if (row >= 0 && row < 10) {
+                    board[row][col] = 'arr';
+                }
             }
-            else if (board[row][col + 1]) {
-                board[row].splice(col + 1, 1, 'O')
+            if (col - 1 >= 0 && row >=0 && row < 10) {
+                board[row][col - 1] = 'arr';
             }
-            if (idx === -1  ) {
-                board[row].splice(col, 1, 'O')
+            if (col + 1 < 10 && row >=0 && row < 10) {
+                board[row][col + 1] = 'arr';
             }
-            else if(idx === -2){
-                board[row].splice(col, 1, 'O')
+        } else if (dir === 'h') {
+            if (idx === -1 || idx === -2) {
+                if (col >= 0 && col < 10) {
+                  board[row][col] = 'arr';
+                }
+            }
+            if (row - 1 >= 0 && col >= 0 && col < 10) {
+                board[row - 1][col] = 'arr';
+            }
+            if (row + 1 < 10 && col >= 0 && col < 10) {
+                board[row + 1][col] = 'arr';
             }
         }
     }
@@ -43,18 +55,30 @@ const gameBoard = () => {
         }
 
         const ship = Ship(len)
-        const shipIdx = 0
+        let shipIdx = 0
         if (dir === 'h') {
             for (let i = col; i < col + len; i++) {
-                board[row].splice(i, 1, {ship})
+                if (shipIdx === 0) {
+                    aroundShip(row, i - 1, dir, -1)
+                }
+                else if(shipIdx === len - 1 ){
+                  aroundShip(row, i + 1, dir, -2)
+                }
+                board[row][i] = {ship}
+                aroundShip(row, i, dir, shipIdx)
+                shipIdx++
             }
         }
         else if (dir === 'v') {
             for (let i = row; i < row + len; i++) {
-                if (shipIdx === 0 && board[row-1][col]) {
-                    
+                if (shipIdx === 0) {
+                    aroundShip(i - 1, col, dir, -1)
                 }
-                board[i].splice(col, 1, {ship})
+                else if(shipIdx === len - 1 ){
+                    aroundShip(i + 1, col, dir, -2)
+                }
+                board[i][col] = {ship}
+                aroundShip(i, col, dir, shipIdx)
                 shipIdx++
             }
         }
@@ -65,5 +89,4 @@ const gameBoard = () => {
         placeShip
     }
 }
-
 export {gameBoard}
