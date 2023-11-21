@@ -78,7 +78,7 @@ test('Success landed a shot', () => {
     const gb = gameBoard()
     gb.placeShip(0, 0, 1, 'h')
     gb.receiveAttack(0, 0)
-    expect(gb.board[0][0].ship.isHit).toBeTruthy()
+    expect(gb.board[0][0].isHit).toBeTruthy()
     expect(gb.board[0][0].ship.hitted).toBe(1)
 })
 test('sinking ship 1x1', () => {
@@ -124,7 +124,7 @@ test('not sinking all the ships', () => {
     gb.placeShip(2, 4, 1, 'h')
     gb.receiveAttack(2, 4)
     gb.placeShip(9, 6, 1, 'h')
-    expect(gb.isOver()).toBeTruthy()
+    expect(gb.isOver()).toBeFalsy()
 })
 test('ship sink collaterall 1x1 [0][0]', () => {
     const gb = gameBoard()
