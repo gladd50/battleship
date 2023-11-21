@@ -1,8 +1,9 @@
-const Ship = (length) => {
+const Ship = (len, dir) => {
     return{
-        len: length,
+        len,
         hitted: 0,
         isHit: false,
+        dir,
         hit: function() {
             this.hitted += 1
         },
