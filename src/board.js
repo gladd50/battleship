@@ -61,7 +61,7 @@ const gameBoard = () => {
             }
         }
 
-        const ship = Ship(len, dir)
+        const ship = Ship(len)
         let shipIdx = 0
         if (dir === 'h') {
             for (let i = col; i < col + len; i++) {

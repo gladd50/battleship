@@ -63,6 +63,17 @@ test('Missed a shot', () => {
     gb.receiveAttack(0,0)
     expect(gb.board[0][0]).toBe('X')
 })
+test('shot the same open tile twice', () => {
+    const gb = gameBoard()
+    gb.receiveAttack(0,0)
+    expect(gb.receiveAttack(0,0)).toBe('illegal')
+})
+test('shot the same boat tile twice', () => {
+    const gb = gameBoard()
+    gb.placeShip(0,0,1,'h')
+    gb.receiveAttack(0,0)
+    expect(gb.receiveAttack(0,0)).toBe('illegal')
+})
 test('Success landed a shot', () => {
     const gb = gameBoard()
     gb.placeShip(0, 0, 1, 'h')

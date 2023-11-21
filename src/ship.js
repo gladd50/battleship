@@ -3,7 +3,6 @@ const Ship = (len, dir) => {
         len,
         hitted: 0,
         isHit: false,
-        dir,
         hit: function() {
             this.hitted += 1
         },
