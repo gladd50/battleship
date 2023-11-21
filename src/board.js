@@ -8,31 +8,38 @@ const gameBoard = () => {
             board[i].push('0')
         }
     }
+    let aroundPos = []
     const aroundShip = (row, col, dir, idx) => {
         if (dir === 'v') {
             if (idx === -1 || idx === -2) {
               console.log(row)
                 if (row >= 0 && row < 10) {
-                    board[row][col] = 'arr';
+                    board[row][col] = 'W';
+                    aroundPos.push({row,col})
                 }
             }
             if (col - 1 >= 0 && row >=0 && row < 10) {
-                board[row][col - 1] = 'arr';
+                board[row][col - 1] = 'W';
+                aroundPos.push({row,col: col - 1})
             }
             if (col + 1 < 10 && row >=0 && row < 10) {
-                board[row][col + 1] = 'arr';
+                board[row][col + 1] = 'W';
+                aroundPos.push({row,col: col + 1})
             }
         } else if (dir === 'h') {
             if (idx === -1 || idx === -2) {
                 if (col >= 0 && col < 10) {
-                  board[row][col] = 'arr';
+                  board[row][col] = 'W';
+                  aroundPos.push({row,col})
                 }
             }
             if (row - 1 >= 0 && col >= 0 && col < 10) {
-                board[row - 1][col] = 'arr';
+                board[row - 1][col] = 'W';
+                aroundPos.push({row: row - 1,col})
             }
             if (row + 1 < 10 && col >= 0 && col < 10) {
-                board[row + 1][col] = 'arr';
+                board[row + 1][col] = 'W';
+                aroundPos.push({row: row + 1,col})
             }
         }
     }
@@ -82,11 +89,23 @@ const gameBoard = () => {
                 shipIdx++
             }
         }
-        return true
+    }
+    const receiveAttack = (row,col) => {
+        if (board[row][col] === 'X' || board[row][col].ship && board[row][col].ship.isHit) {
+            return 'illegal'
+        }
+        if (board[row][col].ship) {
+            board[row][col].ship.isHit = true
+            board[row][col].ship.hit()
+        } else{
+            board[row][col] = 'X'
+        }
     }
     return{
         board,
-        placeShip
+        aroundPos,
+        placeShip,
+        receiveAttack
     }
 }
 export {gameBoard}
