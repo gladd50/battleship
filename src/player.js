@@ -3,13 +3,6 @@ import { gameBoard } from "./board"
 const playerBoard = gameBoard()
 const botBoard = gameBoard()
 
-const changeTurner = (turn) => {
-    const changeTurn = () => {
-        turn = !turn
-        return turn
-    }
-    return {changeTurn}
-}
 const attacker = (board) => {
     const attack = (row, col) => {
         return board.receiveAttack(row, col)
@@ -34,22 +27,35 @@ const fleetRandomizer = (board) => {
     return {randomFleet}
 }
 const player = () => {
-    let playerTurn = true
+    let turn = true
+    const changeTurn = () => {
+        turn = !turn
+        return turn
+    }
+    const getTurn = () => turn
     return{
-        playerTurn,
-        ...changeTurner(playerTurn),
+        gb: playerBoard,
+        getTurn,
+        changeTurn,
         ...attacker(botBoard),
         ...fleetCreator(playerBoard),
         ...fleetRandomizer(playerBoard)
     }
 }
 const bot = () => {
-    let playerTurn = false
+    let turn = false
+    const changeTurn = () => {
+        turn = !turn
+        return turn
+    }
+    const getTurn = () => turn
     return{
-        playerTurn,
-        ...changeTurner(playerTurn),
-        ...attacker(playerBoard),
+        gb: botBoard,
+        getTurn,
+        changeTurn,
         ...fleetCreator(botBoard),
         ...fleetRandomizer(botBoard)
     }
 }
+
+export {player, bot}
