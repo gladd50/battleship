@@ -49,6 +49,17 @@ const bot = () => {
         return turn
     }
     const getTurn = () => turn
+    const attack = () => {
+        let hit = 0
+        if (hit === 0){
+            let res = 'illegal'
+            while (res === 'illegal') {
+                let randomRow = Math.floor(Math.random() * 11)
+                let randomCol = Math.floor(Math.random() * 11)
+                res = botBoard.receiveAttack(randomRow, randomCol)
+            }
+        }
+    }
     return{
         gb: botBoard,
         getTurn,

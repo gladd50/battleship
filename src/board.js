@@ -117,8 +117,10 @@ const gameBoard = () => {
             if (board[row][col].ship.isSunk()) {
                 collaterallSunk(row,col)
             }
+            return 'hit a ship'
         } else{
             board[row][col] = 'X'
+            return 'miss'
         }
     }
     const isOver = () => {
