@@ -88,6 +88,7 @@ const gameBoard = () => {
             }
         }
         ship.aroundPos = aroundPos
+        return true
     }
     const collaterallSunk = (row,col) => {
         const around = board[row][col].ship.aroundPos
@@ -118,8 +119,20 @@ const gameBoard = () => {
         }
         return true
     }
+    const availableTiles = (len, dir) => {
+        let avaiTiles = []
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (placeShip(i, j, len, dir)) {
+                    avaiTiles.push({row : i, col : j})
+                }
+            }   
+        }
+        return avaiTiles
+    }
     return{
         board,
+        availableTiles,
         placeShip,
         receiveAttack,
         isOver

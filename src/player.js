@@ -25,9 +25,9 @@ const fleetCreator = (board) => {
 const fleetRandomizer = (board) => {
     const randomFleet = (shipLenAll) => {
         shipLenAll.forEach(shipLen => {
-            const availableTiles = board.availableTiles(shipLen)
-            const randomTileIdx = Math.floor(Math.random() * availableTiles.length)
             const randomDir = Math.floor(Math.random() * 2) === 1 ? 'h' : 'v'
+            const availableTiles = board.availableTiles(shipLen, randomDir)
+            const randomTileIdx = Math.floor(Math.random() * availableTiles.length)
             board.placeShip(availableTiles[randomTileIdx].row, availableTiles[randomTileIdx].col, shipLen, randomDir)
         });
     }
