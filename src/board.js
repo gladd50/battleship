@@ -41,7 +41,7 @@ const gameBoard = () => {
             }
         }
     }
-    const placeShip = (row, col, len, dir) => {
+    const placeShip = (row, col, len, dir, isRandom = false, tempBoard = null) => {
         if (dir === 'h' && col + len > 10) {
             return 0
         }
@@ -57,6 +57,18 @@ const gameBoard = () => {
             if (dir === 'v' && board[i][col] !== '0') {
                 return 0
             }
+        }
+        if (isRandom) {
+            if (dir === 'h') {
+                for (let i = col; i < col + len; i++) {
+                    tempBoard[row][i] = 'Q'
+                }
+            } else if(dir === 'v'){
+                for (let i = row; i < row + len; i++) {
+                    tempBoard[i][col] = 'Q'
+                }
+            }
+            return true
         }
         let ship = Ship(len)
         let shipIdx = 0
@@ -120,15 +132,17 @@ const gameBoard = () => {
         return true
     }
     const availableTiles = (len, dir) => {
-        let avaiTiles = []
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                if (placeShip(i, j, len, dir)) {
-                    avaiTiles.push({row : i, col : j})
+        let avaiTiles = [];
+        let tempBoard = JSON.parse(JSON.stringify(board)); 
+    
+        for (let row = 0; row < 5; row++) {
+            for (let col = 0; col < 5; col++) {
+                if (placeShip(row, col, len, dir, true, tempBoard) !== 0) {
+                    avaiTiles.push({ row, col });
                 }
-            }   
+            }
         }
-        return avaiTiles
+        return avaiTiles;
     }
     return{
         board,
