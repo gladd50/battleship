@@ -26,3 +26,10 @@ test('Bot attack', () => {
     player2.attack(1,2)
     expect(player1.board[1][2]).toBe('X')
 })
+test('create fleet', () => {
+    const player1 = Player('You')
+    const player2 = Bot('Enemy')
+    player1.createFleet(0,0,1,'h')
+    expect(player1.board[0][0]).not.toBe('0')
+})
+
