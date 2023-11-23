@@ -1,4 +1,4 @@
-const Ship = (len, dir) => {
+const Ship = (len) => {
     return{
         len,
         hitted: 0,
