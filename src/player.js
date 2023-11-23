@@ -92,11 +92,11 @@ const bot = () => {
                     }
                 }
                 if (secondHit.dir === 'left') {
-                    const nextHitResD = playerBoard.receiveAttack(secondHit.row, secondHit.col - 1)
+                    const nextHitResD = playerBoard.receiveAttack(secondHit.row, secondHit.col - i)
                     if (nextHitResD !== "hit a ship") {
                         return 'missed'
                     }
-                    if (playerBoard.board[secondHit.row][secondHit.col - 1].ship.isSunk()) {
+                    if (playerBoard.board[secondHit.row][secondHit.col - i].ship.isSunk()) {
                         targetStack = []
                         return 'ship sunk'
                     }
