@@ -137,8 +137,8 @@ const gameBoard = () => {
         let avaiTiles = [];
         let tempBoard = JSON.parse(JSON.stringify(board)); 
     
-        for (let row = 0; row < 5; row++) {
-            for (let col = 0; col < 5; col++) {
+        for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
                 if (placeShip(row, col, len, dir, true, tempBoard) !== 0) {
                     avaiTiles.push({ row, col });
                 }
