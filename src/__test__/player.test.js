@@ -26,4 +26,18 @@ test('create fleet', () => {
     player1.createFleet(0,0,1,'h')
     expect(player1.gb.board[0][0]).not.toBe('0')
 })
+test('create random fleet player', () => {
+    const player1 = player()
+    const player2 = bot()
+    const shipLenAll = [5,4,3,3,2]
+    
+    expect(player1.randomFleet(shipLenAll)).toBe('fleet ready')
+})
+test('create random fleet player', () => {
+    const player1 = player()
+    const player2 = bot()
+    const shipLenAll = [5,4,3,3,2]
+    
+    expect(player2.randomFleet(shipLenAll)).toBe('fleet ready')
+})
 

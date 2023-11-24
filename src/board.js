@@ -2,6 +2,7 @@ import { Ship } from "./ship";
 
 const gameBoard = () => {
     const board = []
+    let shipInBoard = 0
     for (let i = 0; i < 10; i++) {
         board[i] = []
         for (let j = 0; j < 10; j++) {
@@ -100,6 +101,7 @@ const gameBoard = () => {
             }
         }
         ship.aroundPos = aroundPos
+        shipInBoard++
         return true
     }
     const collaterallSunk = (row,col) => {
@@ -146,8 +148,10 @@ const gameBoard = () => {
         }
         return avaiTiles;
     }
+    const countShip = () => shipInBoard
     return{
         board,
+        countShip,
         availableTiles,
         placeShip,
         receiveAttack,

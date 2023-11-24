@@ -23,6 +23,7 @@ const fleetRandomizer = (board) => {
             const randomTileIdx = Math.floor(Math.random() * availableTiles.length)
             board.placeShip(availableTiles[randomTileIdx].row, availableTiles[randomTileIdx].col, shipLen, randomDir)
         });
+        return 'fleet ready'
     }
     return {randomFleet}
 }
