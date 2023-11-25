@@ -149,13 +149,21 @@ const gameBoard = () => {
         return avaiTiles;
     }
     const countShip = () => shipInBoard
+    const resetBoard = () => {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                board[i][j] = '0'
+            }
+        }
+    }
     return{
         board,
         countShip,
         availableTiles,
         placeShip,
         receiveAttack,
-        isOver
+        isOver,
+        resetBoard
     }
 }
 export {gameBoard}
