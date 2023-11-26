@@ -2,12 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/merry_go.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
     <title>Battleship</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <header>
+          <h1>battleship</h1>
+      </header>
+      <main>
+          <section class="enemy">
+              <h2>Enemy's Board</h2>
+              <div class="board" id="enemy-board"></div>
+          </section>
+          <section class="you">
+              <h2>Your Board</h2>
+              <div class="board" id="you-board"></div>
+              <div class="board-feat">
+                  <button class="board-btn" id="random-btn">Randomize Board</button>
+                  <button class="board-btn" id="reset-btn">Reset Board</button>
+              </div>
+          </section>
+      </main>
+      <footer>
+          <div id="ship-place" draggable="true">
+              <div class="cell-place" id="shopi"></div>
+              <div class="cell-place"></div>
+              <div class="cell-place"></div>
+          </div>
+          <span class="ship-name">Carrier</span>
+      </footer>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
