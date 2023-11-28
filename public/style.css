@@ -92,19 +92,19 @@ main > section > h2{
 /* BOARD */
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 32px); 
-  grid-template-rows: repeat(10, 32px);
+  grid-template-columns: repeat(10, 30px); 
+  grid-template-rows: repeat(10, 30px);
   border: 1px solid #000;
 }
 
-.cell {
-  width: 32px; 
-  height: 32px;
+.tile {
+  width: 30px; 
+  height: 30px;
   border: 1px solid #000;
   box-sizing: border-box;
   cursor: pointer;
 }
-.cell:hover{
+.tile:hover{
   background-color: rgb(216, 255, 242);
 }
 /* button */
@@ -129,24 +129,26 @@ main > section > h2{
   transform: scale(1.05);
 }
 /* footer */
+.ship-temp-cont{
+  display: flex;
+}
 footer{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.ship-place{
-  display: flex;
-}
-.cell-place{
-  background-color: blueviolet;
-  width: 32px; 
-  height: 32px;
+.ship-temp{
+  background-color: rgb(196, 194, 194);
+  width: 30px; 
+  height: 30px;
   border: 1px solid #000;
   box-sizing: border-box;
   cursor: pointer;
 }
-
+.ship{
+  background-color: rgb(196, 194, 194);
+}
 .missed{
   background-image: url(x_sign.png);
   background-size: cover;
