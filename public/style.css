@@ -161,3 +161,6 @@ footer{
   background-image: url(ship.png);
   background-size: cover;
 }
+.hide{
+  display: none;
+}

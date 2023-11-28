@@ -74,6 +74,7 @@ const gameBoard = () => {
         let ship = Ship(len)
         let shipIdx = 0
         let aroundPos = []
+        const shipPos = []
         if (dir === 'h') {
             for (let i = col; i < col + len; i++) {
                 if (shipIdx === 0) {
@@ -83,6 +84,7 @@ const gameBoard = () => {
                   aroundShip(row, i + 1, dir, -2, aroundPos)
                 }
                 board[row][i] = {ship, isHit: false}
+                shipPos.push({row, col : i})
                 aroundShip(row, i, dir, shipIdx, aroundPos)
                 shipIdx++
             }
@@ -96,13 +98,14 @@ const gameBoard = () => {
                     aroundShip(i + 1, col, dir, -2, aroundPos)
                 }
                 board[i][col] = {ship, isHit: false}
+                shipPos.push({row : i, col})
                 aroundShip(i, col, dir, shipIdx, aroundPos)
                 shipIdx++
             }
         }
         ship.aroundPos = aroundPos
         shipInBoard++
-        return true
+        return shipPos
     }
     const collaterallSunk = (row,col) => {
         const around = board[row][col].ship.aroundPos

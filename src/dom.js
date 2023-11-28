@@ -9,7 +9,14 @@ const DOM = {
     tempShipCont: document.querySelector('.ship-temp-cont'),
     tempShips: document.querySelectorAll('.ship-temp'),
     getTempShip: () =>  document.querySelector('.ship-temp'),
+    shipName: document.querySelector('.ship-name'),
 }
+const shipInfo = [
+    {name: 'Patrol Boat', len: 2},
+    {name: 'Submarine', len: 3},
+    {name: 'Destroyer', len: 3},
+    {name: 'Battleship', len: 4},
+]
 
 const renderBoard = () => {
     const {youBoard, enemyBoard} = DOM
@@ -34,7 +41,7 @@ const renderBoard = () => {
 const setupGame = () => {
     renderBoard()
     /* ship drag */
-    const {tempShipCont, tempShips, getYouTiles, getTempShip} = DOM
+    const {tempShipCont, tempShips, getYouTiles, getTempShip, shipName} = DOM
     const changeDir = () => {
         if (tempShipCont.style.display === 'block') {
             tempShipCont.style.display = 'flex';
@@ -57,18 +64,56 @@ const setupGame = () => {
         const prevTship = getTempShip()
         const shipData = {
             dir: prevTship.dataset.dir,
-            len: prevTship.dataset.len
+            len: parseInt(prevTship.dataset.len, 10)
         }
         const shipPos = {
-            row: e.target.dataset.row,
-            col: e.target.dataset.col
+            row: parseInt(e.target.dataset.row, 10),
+            col: parseInt(e.target.dataset.col, 10)
         }
         const {dir, len} = shipData
         const {row, col} = shipPos
-        const ready = you.createFleet(row, col, len, dir)
+        console.log(row,col,len,dir)
+        const shipsBoardPos = you.createFleet(row, col, len, dir)
+        console.log(shipsBoardPos)
+        const removePrevTship = () => {
+            while(tempShipCont.firstElementChild){
+                tempShipCont.removeChild(tempShipCont.firstElementChild)
+            }
+        }
+        const createTempShips = () => {
+            const nextTshipInfo = shipInfo.pop()
+            if (nextTshipInfo) {
+                for (let i = 0; i < nextTshipInfo.len; i++) {
+                    const newTship = document.createElement('div')
+                    newTship.classList.add('ship-temp')
+                    newTship.dataset.dir = shipData.dir
+                    newTship.dataset.len = nextTshipInfo.len
+                    shipName.textContent = nextTshipInfo.name
+                    newTship.addEventListener('click', changeDir)
+                    tempShipCont.append(newTship)
+                }
+            } else{
+                shipName.textContent = ''
+            }
+        }
+        const renderShips = () => {
+            for (let shipIdx = 0; shipIdx < shipsBoardPos.length; shipIdx++) {
+                const {row, col} = shipsBoardPos[shipIdx]
+                const newShipQuery = `.you-tile[data-row="${row}"][data-col="${col}"]`
+                const newShip = document.querySelector(newShipQuery)
+                newShip.classList.add('ship')
+            }
+        }
+        if (shipsBoardPos){
+            removePrevTship()
+            createTempShips()
+            renderShips()
+            console.log(you.gb.board)
+        }
     }
     youTiles.forEach(tile =>{
         tile.addEventListener('dragover',(e) => allowDrop(e))
+        tile.addEventListener('drop',(e) => handleShipPlace(e))
     })    
 }
 
