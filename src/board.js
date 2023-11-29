@@ -112,6 +112,7 @@ const gameBoard = () => {
         for (let i = 0; i < around.length; i++) {
             board[around[i].row][around[i].col] = 'X'
         }
+        return around
     }
     const receiveAttack = (row,col) => {
         if (board[row][col] === 'X' || board[row][col].isHit) {
@@ -120,7 +121,7 @@ const gameBoard = () => {
             board[row][col].isHit = true
             board[row][col].ship.hit()
             if (board[row][col].ship.isSunk()) {
-                collaterallSunk(row,col)
+                return collaterallSunk(row,col)
             }
             return 'hit a ship'
         } else{

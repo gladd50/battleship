@@ -1,3 +1,4 @@
-import { setupGame } from "./src/dom"
+import { setupGame, initGame } from "./src/dom"
 
 setupGame()
+initGame()

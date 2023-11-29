@@ -16,12 +16,15 @@ const play = (row,col) => {
     let res = null
     if (you.getTurn()) {
         res = you.attack(row,col)
-    } else {
-        enemy.attack()
-    }
-    if (res !== 'hit as ship') {
+    } 
+    if (res !== 'hit a ship') {
         you.changeTurn()
         enemy.changeTurn()
+        if (enemy.getTurn()) {
+            res = enemy.attack()
+            you.changeTurn()
+            enemy.changeTurn()
+        }
         return res
     }
     return res

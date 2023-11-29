@@ -4,7 +4,7 @@ const DOM = {
     youBoard: document.querySelector('#you-board'),
     enemyBoard: document.querySelector('#enemy-board'),
     getYouTiles: () => document.querySelectorAll('.you-tile'),
-    enemyTiles: document.querySelectorAll('.enemy-tile'),
+    getEnemyTiles: () => document.querySelectorAll('.enemy-tile'),
     tiles: document.querySelectorAll('.tile'),
     tempShipCont: document.querySelector('.ship-temp-cont'),
     tempShips: document.querySelectorAll('.ship-temp'),
@@ -82,6 +82,7 @@ const setupGame = () => {
             const newAroundQuery = `.you-tile[data-row="${row}"][data-col="${col}"]`
             const newAround = document.querySelector(newAroundQuery)
             newAround.classList.add('around')
+            newAround.classList.add('around-show')
         }
     }
     const hideStartBtn = () => {
@@ -139,13 +140,18 @@ const setupGame = () => {
     /* feature button */
     const resetBoardDOM = (isRandom) => {
         you.gb.resetBoard()
+        enemy.gb.resetBoard()
         youTiles.forEach(tile => {
             tile.classList.remove('ship')
             tile.classList.remove('around')
+            tile.classList.remove('around-show')
         })
+
         removePrevTship()
         shipInfoTemp = [...shipInfo]
         shipName.textContent = ''
+        randomBtn.classList.remove('hide')
+
         if (isRandom !== 'random') {
             hideStartBtn()
             const createFirstTship = () => {
@@ -178,13 +184,40 @@ const setupGame = () => {
 }
 
 const initGame = () => {
-    const {startBtn, resetBtn, randomBtn} = DOM
+    const {startBtn, resetBtn, randomBtn, getYouTiles, getEnemyTiles} = DOM
+    const youTiles = getYouTiles()
+    const enemyTiles = getEnemyTiles()
+
     const hideBtn = () => {
         startBtn.classList.add('hide')
-        resetBtn.classList.add('hide')
         randomBtn.classList.add('hide')
     }
-
+    const hideAround = () => {
+        youTiles.forEach(tile => {
+            if (tile.classList.contains('around-show')) {
+                tile.classList.remove('around-show')
+            }
+        })
+    }
+    const attack = (e) => {
+        const row = e.target.dataset.row
+        const col = e.target.dataset.col
+        const res = play(row,col)
+        console.log(res)
+        console.log(`youTurn: ${you.getTurn()}`)
+        console.log(`enemyTurn: ${enemy.getTurn()}`)
+        console.log(you.gb.board)
+        console.log(enemy.gb.board)
+    }
+    const startGame = () => {
+        setupBoard()
+        hideAround()
+        hideBtn()
+        enemyTiles.forEach(tile => {
+            tile.addEventListener('click', (e) => attack(e))
+        })
+    }
+    startBtn.addEventListener('click', startGame)
 }
 
-export {setupGame}
+export {setupGame, initGame}
