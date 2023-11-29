@@ -36,7 +36,7 @@ const play = (row,col) => {
         return result
     }
     changePlayer()
-
+    
     const eRes = enemy.attack()
     console.log(eRes)
     if (Array.isArray(eRes) && eRes[0] === 'hit') {
@@ -44,6 +44,7 @@ const play = (row,col) => {
     } else{
         result.enemy.around = eRes
     }
+    changePlayer()
     return result
     
 }
