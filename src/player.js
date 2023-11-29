@@ -53,61 +53,61 @@ const bot = () => {
     const getTurn = () => turn
     let targetStack = []
     const attack = () => {
-        const attackTrail = []
+        const attackTrail = ['hit']
         if (targetStack.length > 0) {
             const secondHit = targetStack.pop()
             const secondHitRes = playerBoard.receiveAttack(secondHit.row, secondHit.col) 
+            attackTrail.push({row: secondHit.row, col: secondHit.col})
             if (typeof playerBoard.board[secondHit.row][secondHit.col] === 'object' && playerBoard.board[secondHit.row][secondHit.col].ship.isSunk()) {
                 targetStack = []
                 return playerBoard.board[secondHit.row][secondHit.col].ship.aroundPos
             }
-            attackTrail.push({row: secondHit.row, col: secondHit.col})
             if (secondHitRes !== 'hit a ship') return attackTrail
             const nextHitShipLen = playerBoard.board[secondHit.row][secondHit.col].ship.len 
             for (let i = 1; i <= nextHitShipLen - 2; i++) {
                 if (secondHit.dir === 'down') {
                     const nextHitResD = playerBoard.receiveAttack(secondHit.row + i, secondHit.col)
-                    if (nextHitResD !== "hit a ship") {
-                        return attackTrail
-                    }
-                    if (playerBoard.board[secondHit.row + i][secondHit.col].ship.isSunk()) {
+                    attackTrail.push({row: secondHit.row + i, col: secondHit.col})
+                    if (typeof playerBoard.board[secondHit.row + i][secondHit.col] === 'object' && playerBoard.board[secondHit.row + i][secondHit.col].ship.isSunk()) {
                         targetStack = []
                         return playerBoard.board[secondHit.row + i][secondHit.col].ship.aroundPos
                     }
-                    attackTrail.push({row: secondHit.row + i, col: secondHit.col})
+                    if (nextHitResD !== "hit a ship") {
+                        return attackTrail
+                    }
                 }
                 if (secondHit.dir === 'up') {
                     const nextHitResD = playerBoard.receiveAttack(secondHit.row - i, secondHit.col)
-                    if (nextHitResD !== "hit a ship") {
-                        return attackTrail
-                    }
-                    if (playerBoard.board[secondHit.row - i][secondHit.col].ship.isSunk()) {
+                    attackTrail.push({row: secondHit.row - i, col: secondHit.col})
+                    if (typeof playerBoard.board[secondHit.row - i][secondHit.col] === 'object' && playerBoard.board[secondHit.row - i][secondHit.col].ship.isSunk()) {
                         targetStack = []
                         return playerBoard.board[secondHit.row - i][secondHit.col].ship.aroundPos
                     }
-                    attackTrail.push({row: secondHit.row - i, col: secondHit.col})
+                    if (nextHitResD !== "hit a ship") {
+                        return attackTrail
+                    }
                 }
                 if (secondHit.dir === 'right') {
                     const nextHitResD = playerBoard.receiveAttack(secondHit.row, secondHit.col + i)
-                    if (nextHitResD !== "hit a ship") {
-                        return attackTrail
-                    }
-                    if (playerBoard.board[secondHit.row][secondHit.col + i].ship.isSunk()) {
+                    attackTrail.push({row: secondHit.row, col: secondHit.col + i})
+                    if (typeof playerBoard.board[secondHit.row][secondHit.col + i] === 'object' && playerBoard.board[secondHit.row][secondHit.col + i].ship.isSunk()) {
                         targetStack = []
                         return playerBoard.board[secondHit.row][secondHit.col + i].ship.aroundPos
                     }
-                    attackTrail.push({row: secondHit.row, col: secondHit.col + i})
-                }
-                if (secondHit.dir === 'left') {
-                    const nextHitResD = playerBoard.receiveAttack(secondHit.row, secondHit.col - i)
                     if (nextHitResD !== "hit a ship") {
                         return attackTrail
                     }
-                    if (playerBoard.board[secondHit.row][secondHit.col - i].ship.isSunk()) {
+                }
+                if (secondHit.dir === 'left') {
+                    const nextHitResD = playerBoard.receiveAttack(secondHit.row, secondHit.col - i)
+                    attackTrail.push({row: secondHit.row, col: secondHit.col - i})
+                    if (typeof playerBoard.board[secondHit.row][secondHit.col - i] === 'object' && playerBoard.board[secondHit.row][secondHit.col - i].ship.isSunk()) {
                         targetStack = []
                         return playerBoard.board[secondHit.row][secondHit.col - i].ship.aroundPos
                     }
-                    attackTrail.push({row: secondHit.row, col: secondHit.col - i})
+                    if (nextHitResD !== "hit a ship") {
+                        return attackTrail
+                    }
                 }
             }
         }
@@ -134,62 +134,57 @@ const bot = () => {
                 if(col - 1 >= 0) targetStack.push({row, col: col - 1, dir: 'left'})
                 const secondHit = targetStack.pop()
                 const secondHitRes = playerBoard.receiveAttack(secondHit.row, secondHit.col)
-                console.log(`second hit: ${secondHitRes}`) 
-                if (secondHitRes !== 'hit a ship') return attackTrail
-                if (playerBoard.board[secondHit.row][secondHit.col].ship.isSunk()) {
+                attackTrail.push({row: secondHit.row, col: secondHit.col})
+                if (typeof playerBoard.board[secondHit.row][secondHit.col] === 'object' && playerBoard.board[secondHit.row][secondHit.col].ship.isSunk()) {
                     targetStack = []
                     return playerBoard.board[secondHit.row][secondHit.col].ship.aroundPos
                 }
-                attackTrail.push({row: secondHit.row, col: secondHit.col})
+                if (secondHitRes !== 'hit a ship') return attackTrail
                 const nextHitShipLen = playerBoard.board[secondHit.row][secondHit.col].ship.len 
                 for (let i = 1; i <= nextHitShipLen - 2; i++) {
                     if (secondHit.dir === 'down') {
                         const nextHitResD = playerBoard.receiveAttack(secondHit.row + i, secondHit.col)
-                        console.log(`next hit: ${nextHitResD}`)
-                        if (nextHitResD !== "hit a ship") {
-                            return attackTrail
-                        }
-                        if (playerBoard.board[secondHit.row + i][secondHit.col].ship.isSunk()) {
+                        attackTrail.push({row: secondHit.row + i, col: secondHit.col})
+                        if (typeof playerBoard.board[secondHit.row + i][secondHit.col] === 'object' && playerBoard.board[secondHit.row + i][secondHit.col].ship.isSunk()) {
                             targetStack = []
                             return playerBoard.board[secondHit.row + i][secondHit.col].ship.aroundPos
                         }
-                        attackTrail.push({row: secondHit.row + i, col: secondHit.col})
+                        if (nextHitResD !== "hit a ship") {
+                            return attackTrail
+                        }
                     }
                     if (secondHit.dir === 'up') {
                         const nextHitResU = playerBoard.receiveAttack(secondHit.row - i, secondHit.col)
-                        console.log(`next hit: ${nextHitResU}`)
-                        if (nextHitResU !== "hit a ship") {
-                            return attackTrail
-                        }
-                        if (playerBoard.board[secondHit.row - i][secondHit.col].ship.isSunk()) {
+                        attackTrail.push({row: secondHit.row - i, col: secondHit.col})
+                        if (typeof playerBoard.board[secondHit.row - i][secondHit.col] === 'object' && playerBoard.board[secondHit.row - i][secondHit.col].ship.isSunk()) {
                             targetStack = []
                             return playerBoard.board[secondHit.row - i][secondHit.col].ship.aroundPos
                         }
-                        attackTrail.push({row: secondHit.row - i, col: secondHit.col})
+                        if (nextHitResU !== "hit a ship") {
+                            return attackTrail
+                        }
                     }
                     if (secondHit.dir === 'right') {
                         const nextHitResR = playerBoard.receiveAttack(secondHit.row, secondHit.col + i)
-                        console.log(`next hit: ${nextHitResR}`)
-                        if (nextHitResR !== "hit a ship") {
-                            return attackTrail
-                        }
-                        if (playerBoard.board[secondHit.row][secondHit.col + i].ship.isSunk()) {
+                        attackTrail.push({row: secondHit.row, col: secondHit.col + i})
+                        if (typeof playerBoard.board[secondHit.row][secondHit.col + i] === 'object' && playerBoard.board[secondHit.row][secondHit.col + i].ship.isSunk()) {
                             targetStack = []
                             return playerBoard.board[secondHit.row][secondHit.col + i].ship.aroundPos
                         }
-                        attackTrail.push({row: secondHit.row, col: secondHit.col + i})
+                        if (nextHitResR !== "hit a ship") {
+                            return attackTrail
+                        }
                     }
                     if (secondHit.dir === 'left') {
                         const nextHitResL = playerBoard.receiveAttack(secondHit.row, secondHit.col - i)
-                        console.log(`next hit: ${nextHitResL}`)
-                        if (nextHitResL !== "hit a ship") {
-                            return attackTrail
-                        }
-                        if (playerBoard.board[secondHit.row][secondHit.col - i].ship.isSunk()) {
+                        attackTrail.push({row: secondHit.row, col: secondHit.col - i})
+                        if (typeof playerBoard.board[secondHit.row][secondHit.col - i] === 'object' && playerBoard.board[secondHit.row][secondHit.col - i].ship.isSunk()) {
                             targetStack = []
                             return playerBoard.board[secondHit.row][secondHit.col - i].ship.aroundPos
                         }
-                        attackTrail.push({row: secondHit.row, col: secondHit.col - i})
+                        if (nextHitResL !== "hit a ship") {
+                            return attackTrail
+                        }
                     }
                 }
             }

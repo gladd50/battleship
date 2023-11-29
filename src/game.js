@@ -13,21 +13,39 @@ const setupBoard = () => {
 }
 
 const play = (row,col) => {
-    let res = null
-    if (you.getTurn()) {
-        res = you.attack(row,col)
-    } 
-    if (res !== 'hit a ship') {
+    const result = {
+        player: {
+            around: null
+        },
+        enemy: {
+            hit: null,
+            around: null
+        }
+    }
+    const changePlayer = () => {
         you.changeTurn()
         enemy.changeTurn()
-        if (enemy.getTurn()) {
-            res = enemy.attack()
-            you.changeTurn()
-            enemy.changeTurn()
-        }
-        return res
     }
-    return res
+
+    const pRes = you.attack(row,col)
+    if(pRes === 'hit a ship'){
+        return result
+    }
+    else if(typeof pRes === 'object'){
+        result.player.around = pRes
+        return result
+    }
+    changePlayer()
+
+    const eRes = enemy.attack()
+    console.log(eRes)
+    if (Array.isArray(eRes) && eRes[0] === 'hit') {
+        result.enemy.hit = eRes
+    } else{
+        result.enemy.around = eRes
+    }
+    return result
+    
 }
 
 export {setupBoard,play,you,enemy,shipLenAll}

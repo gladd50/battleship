@@ -204,10 +204,10 @@ const initGame = () => {
         const col = e.target.dataset.col
         const res = play(row,col)
         console.log(res)
-        console.log(`youTurn: ${you.getTurn()}`)
-        console.log(`enemyTurn: ${enemy.getTurn()}`)
+        // console.log(`youTurn: ${you.getTurn()}`)
+        // console.log(`enemyTurn: ${enemy.getTurn()}`)
         console.log(you.gb.board)
-        console.log(enemy.gb.board)
+        // console.log(enemy.gb.board)
     }
     const startGame = () => {
         setupBoard()
