@@ -28,6 +28,9 @@ const play = (row,col) => {
     }
 
     const pRes = you.attack(row,col)
+    if (pRes === 'illegal') {
+        return pRes
+    }
     if(pRes === 'hit a ship'){
         return result
     }
