@@ -128,6 +128,22 @@ main > section > h2{
 .board-btn:active{
   transform: scale(1.05);
 }
+.start-btn{
+  padding: 0.5rem 1.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  border: 1px solid black;
+  background-color: rgb(150, 255, 185);
+  font-size: 1.1rem;
+  transition: transform 300ms, background-color 300ms;
+}
+.start-btn:hover{
+  background-color: rgb(118, 248, 161);
+  transform: scale(0.97);
+}
+.start-btn:active{
+  transform: scale(1.05);
+}
 /* footer */
 .ship-temp-cont{
   display: flex;
@@ -139,7 +155,7 @@ footer{
   flex-direction: column;
 }
 .ship-temp{
-  background-color: rgb(196, 194, 194);
+  background-color: rgb(112, 111, 111);
   width: 30px; 
   height: 30px;
   border: 1px solid #000;
@@ -147,7 +163,10 @@ footer{
   cursor: pointer;
 }
 .ship{
-  background-color: rgb(196, 194, 194);
+  background-color: rgb(112, 111, 111);
+}
+.around{
+  background-color: rgb(255, 186, 186);
 }
 .missed{
   background-image: url(x_sign.png);

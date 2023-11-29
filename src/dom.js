@@ -10,6 +10,9 @@ const DOM = {
     tempShips: document.querySelectorAll('.ship-temp'),
     getTempShip: () =>  document.querySelector('.ship-temp'),
     shipName: document.querySelector('.ship-name'),
+    startBtn: document.querySelector('.start-btn'),
+    randomBtn: document.querySelector('#random-btn'),
+    resetBtn: document.querySelector('#reset-btn'),
 }
 const shipInfo = [
     {name: 'Patrol Boat', len: 2},
@@ -40,8 +43,9 @@ const renderBoard = () => {
 
 const setupGame = () => {
     renderBoard()
+    let shipInfoTemp = [...shipInfo]
     /* ship drag */
-    const {tempShipCont, tempShips, getYouTiles, getTempShip, shipName} = DOM
+    const {tempShipCont, tempShips, getYouTiles, getTempShip, shipName, startBtn, randomBtn, resetBtn} = DOM
     const changeDir = () => {
         if (tempShipCont.style.display === 'block') {
             tempShipCont.style.display = 'flex';
@@ -59,6 +63,33 @@ const setupGame = () => {
     const allowDrop = (e) => {
         e.preventDefault()
     }
+    const removePrevTship = () => {
+        while(tempShipCont.firstElementChild){
+            tempShipCont.removeChild(tempShipCont.firstElementChild)
+        }
+    }
+    const renderShips = (shipPos) => {
+        for (let shipIdx = 0; shipIdx < shipPos.length; shipIdx++) {
+            const {row, col} = shipPos[shipIdx]
+            const newShipQuery = `.you-tile[data-row="${row}"][data-col="${col}"]`
+            const newShip = document.querySelector(newShipQuery)
+            newShip.classList.add('ship')
+        }
+    }
+    const renderAround = (aroundPos) => {
+        for (let aroundIdx = 0; aroundIdx < aroundPos.length; aroundIdx++) {
+            const {row, col} = aroundPos[aroundIdx]
+            const newAroundQuery = `.you-tile[data-row="${row}"][data-col="${col}"]`
+            const newAround = document.querySelector(newAroundQuery)
+            newAround.classList.add('around')
+        }
+    }
+    const hideStartBtn = () => {
+        startBtn.classList.add('hide')
+    }
+    const showStartBtn = () => {
+        startBtn.classList.remove('hide')
+    }
     const handleShipPlace = (e) => {
         e.preventDefault()
         const prevTship = getTempShip()
@@ -66,22 +97,15 @@ const setupGame = () => {
             dir: prevTship.dataset.dir,
             len: parseInt(prevTship.dataset.len, 10)
         }
-        const shipPos = {
+        const shipPosBoard = {
             row: parseInt(e.target.dataset.row, 10),
             col: parseInt(e.target.dataset.col, 10)
         }
         const {dir, len} = shipData
-        const {row, col} = shipPos
-        console.log(row,col,len,dir)
-        const shipsBoardPos = you.createFleet(row, col, len, dir)
-        console.log(shipsBoardPos)
-        const removePrevTship = () => {
-            while(tempShipCont.firstElementChild){
-                tempShipCont.removeChild(tempShipCont.firstElementChild)
-            }
-        }
+        const {row, col} = shipPosBoard
+        const {shipPos, aroundPos} = you.createFleet(row, col, len, dir)
         const createTempShips = () => {
-            const nextTshipInfo = shipInfo.pop()
+            const nextTshipInfo = shipInfoTemp.pop()
             if (nextTshipInfo) {
                 for (let i = 0; i < nextTshipInfo.len; i++) {
                     const newTship = document.createElement('div')
@@ -96,25 +120,71 @@ const setupGame = () => {
                 shipName.textContent = ''
             }
         }
-        const renderShips = () => {
-            for (let shipIdx = 0; shipIdx < shipsBoardPos.length; shipIdx++) {
-                const {row, col} = shipsBoardPos[shipIdx]
-                const newShipQuery = `.you-tile[data-row="${row}"][data-col="${col}"]`
-                const newShip = document.querySelector(newShipQuery)
-                newShip.classList.add('ship')
-            }
-        }
-        if (shipsBoardPos){
+        if (shipPos){
             removePrevTship()
             createTempShips()
-            renderShips()
-            console.log(you.gb.board)
+            renderShips(shipPos)
+            renderAround(aroundPos)
+        }
+        if (shipName.textContent === '') {
+            showStartBtn()
         }
     }
+
     youTiles.forEach(tile =>{
         tile.addEventListener('dragover',(e) => allowDrop(e))
         tile.addEventListener('drop',(e) => handleShipPlace(e))
     })    
+
+    /* feature button */
+    const resetBoardDOM = (isRandom) => {
+        you.gb.resetBoard()
+        youTiles.forEach(tile => {
+            tile.classList.remove('ship')
+            tile.classList.remove('around')
+        })
+        removePrevTship()
+        shipInfoTemp = [...shipInfo]
+        shipName.textContent = ''
+        if (isRandom !== 'random') {
+            hideStartBtn()
+            const createFirstTship = () => {
+                for (let i = 0; i < 5; i++) {
+                    const newTship = document.createElement('div')
+                    newTship.classList.add('ship-temp')
+                    newTship.dataset.dir = 'h'
+                    newTship.dataset.len = 5
+                    shipName.textContent = 'Carrier'
+                    newTship.addEventListener('click', changeDir)
+                    tempShipCont.append(newTship)
+                }
+            }
+            createFirstTship()
+            tempShipCont.style.display = 'flex'
+        }
+    }
+    const randomizeBoard = () => {
+        resetBoardDOM('random')
+        const AllPos = you.randomFleet(shipLenAll)
+        AllPos.forEach(pos => {
+            const {shipPos, aroundPos} = pos
+            renderShips(shipPos)
+            renderAround(aroundPos)
+        })
+        showStartBtn()
+    }
+    resetBtn.addEventListener('click', ()=> resetBoardDOM('not random'))
+    randomBtn.addEventListener('click', randomizeBoard)
+}
+
+const initGame = () => {
+    const {startBtn, resetBtn, randomBtn} = DOM
+    const hideBtn = () => {
+        startBtn.classList.add('hide')
+        resetBtn.classList.add('hide')
+        randomBtn.classList.add('hide')
+    }
+
 }
 
 export {setupGame}

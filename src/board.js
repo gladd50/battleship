@@ -105,7 +105,7 @@ const gameBoard = () => {
         }
         ship.aroundPos = aroundPos
         shipInBoard++
-        return shipPos
+        return {shipPos, aroundPos}
     }
     const collaterallSunk = (row,col) => {
         const around = board[row][col].ship.aroundPos

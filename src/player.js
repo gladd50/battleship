@@ -17,13 +17,14 @@ const fleetCreator = (board) => {
 }
 const fleetRandomizer = (board) => {
     const randomFleet = (shipLenAll) => {
+        let AllPos = []
         shipLenAll.forEach(shipLen => {
             const randomDir = Math.floor(Math.random() * 2) === 1 ? 'h' : 'v'
             const availableTiles = board.availableTiles(shipLen, randomDir)
             const randomTileIdx = Math.floor(Math.random() * availableTiles.length)
-            board.placeShip(availableTiles[randomTileIdx].row, availableTiles[randomTileIdx].col, shipLen, randomDir)
+            AllPos.push(board.placeShip(availableTiles[randomTileIdx].row, availableTiles[randomTileIdx].col, shipLen, randomDir)) 
         });
-        return 'fleet ready'
+        return AllPos
     }
     return {randomFleet}
 }
