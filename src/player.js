@@ -57,7 +57,7 @@ const bot = () => {
         if (targetStack.length > 0) {
             const secondHit = targetStack.pop()
             const secondHitRes = playerBoard.receiveAttack(secondHit.row, secondHit.col) 
-            if (playerBoard.board[secondHit.row][secondHit.col].ship.isSunk()) {
+            if (typeof playerBoard.board[secondHit.row][secondHit.col] === 'object' && playerBoard.board[secondHit.row][secondHit.col].ship.isSunk()) {
                 targetStack = []
                 return playerBoard.board[secondHit.row][secondHit.col].ship.aroundPos
             }
