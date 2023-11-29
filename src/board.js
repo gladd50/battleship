@@ -115,9 +115,9 @@ const gameBoard = () => {
         return around
     }
     const receiveAttack = (row,col) => {
-        if (board[row][col] === 'X' || board[row][col].isHit) {
+        if (board[row][col] === 'X' || typeof board[row][col] == 'object' && board[row][col].isHit) {
             return 'illegal'
-        }else if (board[row][col].ship) {
+        }else if (typeof board[row][col] == 'object' && board[row][col].ship) {
             board[row][col].isHit = true
             board[row][col].ship.hit()
             if (board[row][col].ship.isSunk()) {
@@ -132,7 +132,7 @@ const gameBoard = () => {
     const isOver = () => {
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
-                if (board[i][j].ship && !board[i][j].ship.isSunk()) {
+                if (typeof board[row][col] == 'object' && !board[i][j].ship.isSunk()) {
                     return false
                 }
             }   
