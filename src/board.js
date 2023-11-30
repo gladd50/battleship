@@ -132,7 +132,7 @@ const gameBoard = () => {
     const isOver = () => {
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
-                if (typeof board[row][col] == 'object' && !board[i][j].ship.isSunk()) {
+                if (typeof board[i][j] == 'object' && !board[i][j].ship.isSunk()) {
                     return false
                 }
             }   

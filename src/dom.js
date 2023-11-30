@@ -186,7 +186,7 @@ const setupGame = () => {
 }
 
 const initGame = () => {
-    const {startBtn, randomBtn, enemyBoard, yourName, enemyName, getYouTiles, getEnemyTiles} = DOM
+    const {startBtn, randomBtn, enemyBoard, youBoard, yourName, enemyName, getYouTiles, getEnemyTiles} = DOM
     const youTiles = getYouTiles()
     const enemyTiles = getEnemyTiles()
     const getTile = (row, col, name) => {
@@ -200,6 +200,7 @@ const initGame = () => {
                 const tile = getTile(row, col, 'enemy')
                 if (typeof board[row][col] === 'object') {
                     tile.classList.add('ship-enemy')
+                    tile.classList.add('ship')
                 }
             }
         }
@@ -227,7 +228,6 @@ const initGame = () => {
         for(const around of aroundPos){
             const {row, col} = around
             const tile = getTile(row, col ,name)
-            console.log(tile)
             if (tile.classList.contains('miss')) {
                 tile.classList.remove('miss')
             }
@@ -244,7 +244,6 @@ const initGame = () => {
             }
             const {row, col} = attackPos
             const tile = getTile(row, col, 'you')
-            console.log(tile)
             await delay(500)
             if (tile.classList.contains('ship')) {
                 tile.classList.add('hit')
@@ -260,8 +259,15 @@ const initGame = () => {
         const res = play(row,col)
         if(res === 'illegal') return
         renderAttackPlayer(tile)
+        if (enemy.gb.isOver()) {
+            enemyBoard.classList.add('lose')
+            youBoard.classList.add('win')
+            enemyBoard.classList.add('disable')
+            return
+        }
         if (res.player.around){
-            renderSunk(res.player.around, 'enemy')
+            enemyBoard.classList.add('disable')
+            await renderSunk(res.player.around, 'enemy')
         }
         enemyBoard.classList.add('disable')
 
@@ -278,6 +284,14 @@ const initGame = () => {
             await renderSunk(res.enemy.around, 'you')
             enemyName.classList.add('turn')
             yourName.classList.remove('turn')
+        }
+        if (you.gb.isOver()) {
+            youBoard.classList.add('lose')
+            enemyBoard.classList.add('win')
+            enemyBoard.classList.add('disable')
+            enemyName.classList.remove('turn')
+            yourName.classList.remove('turn')
+            return
         }
         enemyBoard.classList.remove('disable')
     }

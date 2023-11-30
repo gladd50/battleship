@@ -95,6 +95,7 @@ main > section > h2{
   grid-template-columns: repeat(10, 30px); 
   grid-template-rows: repeat(10, 30px);
   border: 1px solid #000;
+  transition: border 500ms;
 }
 
 .tile {
@@ -189,4 +190,10 @@ footer{
 }
 .turn{
   color: rgb(255, 85, 85);
+}
+.win{
+  border: 6px solid rgb(76, 255, 100);
+}
+.lose{
+  border: 6px solid rgb(255, 75, 75);
 }
