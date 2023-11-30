@@ -103,6 +103,7 @@ main > section > h2{
   border: 1px solid #000;
   box-sizing: border-box;
   cursor: pointer;
+  transition: transform 100ms, border 100ms, background-color 100ms;
 }
 .tile:hover{
   background-color: rgb(216, 255, 242);
@@ -168,18 +169,21 @@ footer{
 .around-show{
   background-color: rgb(255, 186, 186);
 }
-.missed{
-  background-image: url(x_sign.png);
-  background-size: cover;
+.around-animation{
+  background-color: rgb(255, 186, 186);
+  transform: scale(1.1);
+  border: 3px solid rgb(255, 75, 75);
 }
-.collaterall{
-  background-image: url(explosion.png);
-  background-size: cover;
+.miss{
+  background-color: rgb(61, 255, 190);
 }
 .hit{
-  background-image: url(ship.png);
+  background-image: url(x_sign.png);
   background-size: cover;
 }
 .hide{
   display: none;
+}
+.disable{
+  pointer-events: none;
 }

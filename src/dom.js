@@ -13,6 +13,8 @@ const DOM = {
     startBtn: document.querySelector('.start-btn'),
     randomBtn: document.querySelector('#random-btn'),
     resetBtn: document.querySelector('#reset-btn'),
+    yourName: document.querySelector('.you > h2'),
+    enemyName: document.querySelector('.enemy > h2'),
 }
 const shipInfo = [
     {name: 'Patrol Boat', len: 2},
@@ -184,10 +186,24 @@ const setupGame = () => {
 }
 
 const initGame = () => {
-    const {startBtn, resetBtn, randomBtn, getYouTiles, getEnemyTiles} = DOM
+    const {startBtn, randomBtn, enemyBoard, getYouTiles, getEnemyTiles} = DOM
     const youTiles = getYouTiles()
     const enemyTiles = getEnemyTiles()
-
+    const getTile = (row, col, name) => {
+        return document.querySelector(`.${name}-tile[data-row="${row}"][data-col="${col}"]`)
+    }
+    
+    const renderEnemyBoard = () => {
+        const board = enemy.gb.board
+        for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+                const tile = getTile(row, col, 'enemy')
+                if (typeof board[row][col] === 'object') {
+                    tile.classList.add('ship-enemy')
+                }
+            }
+        }
+    }
     const hideBtn = () => {
         startBtn.classList.add('hide')
         randomBtn.classList.add('hide')
@@ -199,22 +215,68 @@ const initGame = () => {
             }
         })
     }
-    const renderAttackPlayer = (e) => {
-        const tile = e.target
-        if (tile.classList.contains('ship')) {
-            
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+    const renderAttackPlayer = (tile) => {
+        if (tile.classList.contains('ship-enemy')) {
+            tile.classList.add('hit')
+        } else {
+            tile.classList.add('miss')
         }
     }
-    const attack = (e) => {
+    const renderSunk = async (aroundPos, name) => {
+        for(const around of aroundPos){
+            const {row, col} = around
+            const tile = getTile(row, col ,name)
+            console.log(tile)
+            if (tile.classList.contains('miss')) {
+                tile.classList.remove('miss')
+            }
+            tile.classList.add('around-animation')
+            await delay(100)
+            tile.classList.remove('around-animation')
+            tile.classList.add('around-show')
+        }
+    }
+    const renderEnemyAttack = async (attacksPos) => {
+        for(const attackPos of attacksPos){
+            if (attackPos === 'hit') {
+                continue
+            }
+            const {row, col} = attackPos
+            const tile = getTile(row, col, 'you')
+            console.log(tile)
+            await delay(500)
+            if (tile.classList.contains('ship')) {
+                tile.classList.add('hit')
+            } else {
+                tile.classList.add('miss')
+            }
+        }
+    }
+    const attack = async (e) => {
         const row = e.target.dataset.row
         const col = e.target.dataset.col
+        const tile = e.target
         const res = play(row,col)
-        
+        if(res === 'illegal') return
+        renderAttackPlayer(tile)
+        if (res.player.around){
+            renderSunk(res.player.around, 'enemy')
+        }
+        enemyBoard.classList.add('disable')
+        if(res.enemy.hit){
+            await renderEnemyAttack(res.enemy.hit)
+        }
+        if(res.enemy.around){
+            await renderSunk(res.enemy.around, 'you')
+        }
+        enemyBoard.classList.remove('disable')
     }
     const startGame = () => {
         setupBoard()
         hideAround()
         hideBtn()
+        renderEnemyBoard()
         enemyTiles.forEach(tile => {
             tile.addEventListener('click', (e) => attack(e))
         })
