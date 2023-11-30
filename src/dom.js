@@ -47,7 +47,7 @@ const setupGame = () => {
     renderBoard()
     let shipInfoTemp = [...shipInfo]
     /* ship drag */
-    const {tempShipCont, tempShips, getYouTiles, getTempShip, shipName, startBtn, randomBtn, resetBtn} = DOM
+    const {tempShipCont, tempShips, getYouTiles, getEnemyTiles, getTempShip, shipName, startBtn, randomBtn, resetBtn, youBoard, yourName, enemyBoard, enemyName} = DOM
     const changeDir = () => {
         if (tempShipCont.style.display === 'block') {
             tempShipCont.style.display = 'flex';
@@ -62,6 +62,7 @@ const setupGame = () => {
     })
     /* tiles drop */
     const youTiles = getYouTiles()
+    const enemyTiles = getEnemyTiles()
     const allowDrop = (e) => {
         e.preventDefault()
     }
@@ -138,15 +139,33 @@ const setupGame = () => {
         tile.addEventListener('dragover',(e) => allowDrop(e))
         tile.addEventListener('drop',(e) => handleShipPlace(e))
     })    
-
+    
     /* feature button */
+    const resetBoardSstate = () => {
+        youBoard.classList.remove('lose')
+        enemyBoard.classList.remove('win')
+        enemyName.classList.remove('turn')
+        yourName.classList.remove('turn')
+        enemyBoard.classList.add('disable')
+    }
     const resetBoardDOM = (isRandom) => {
         you.gb.resetBoard()
         enemy.gb.resetBoard()
+        resetBoardSstate()
         youTiles.forEach(tile => {
             tile.classList.remove('ship')
             tile.classList.remove('around')
             tile.classList.remove('around-show')
+            tile.classList.remove('miss')
+            tile.classList.remove('hit')
+        })
+        enemyTiles.forEach(tile => {
+            tile.classList.remove('ship')
+            tile.classList.remove('ship-enemy')
+            tile.classList.remove('around')
+            tile.classList.remove('around-show')
+            tile.classList.remove('miss')
+            tile.classList.remove('hit')
         })
 
         removePrevTship()
@@ -200,7 +219,6 @@ const initGame = () => {
                 const tile = getTile(row, col, 'enemy')
                 if (typeof board[row][col] === 'object') {
                     tile.classList.add('ship-enemy')
-                    tile.classList.add('ship')
                 }
             }
         }
@@ -263,6 +281,8 @@ const initGame = () => {
             enemyBoard.classList.add('lose')
             youBoard.classList.add('win')
             enemyBoard.classList.add('disable')
+            enemyName.classList.remove('turn')
+            yourName.classList.remove('turn')
             return
         }
         if (res.player.around){
@@ -301,6 +321,7 @@ const initGame = () => {
         hideBtn()
         renderEnemyBoard()
         enemyName.classList.add('turn')
+        enemyBoard.classList.remove('disable')
         enemyTiles.forEach(tile => {
             tile.addEventListener('click', (e) => attack(e))
         })
