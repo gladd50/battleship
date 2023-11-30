@@ -277,6 +277,10 @@ const initGame = () => {
         const res = play(row,col)
         if(res === 'illegal') return
         renderAttackPlayer(tile)
+        if (res.player.around){
+            enemyBoard.classList.add('disable')
+            await renderSunk(res.player.around, 'enemy')
+        }
         if (enemy.gb.isOver()) {
             enemyBoard.classList.add('lose')
             youBoard.classList.add('win')
@@ -284,10 +288,6 @@ const initGame = () => {
             enemyName.classList.remove('turn')
             yourName.classList.remove('turn')
             return
-        }
-        if (res.player.around){
-            enemyBoard.classList.add('disable')
-            await renderSunk(res.player.around, 'enemy')
         }
         enemyBoard.classList.add('disable')
 
