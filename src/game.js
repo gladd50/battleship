@@ -36,7 +36,6 @@ const play = (row,col) => {
     }
     else if(typeof pRes === 'object'){
         result.player.around = pRes
-        return result
     }
     changePlayer()
     

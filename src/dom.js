@@ -186,7 +186,7 @@ const setupGame = () => {
 }
 
 const initGame = () => {
-    const {startBtn, randomBtn, enemyBoard, getYouTiles, getEnemyTiles} = DOM
+    const {startBtn, randomBtn, enemyBoard, yourName, enemyName, getYouTiles, getEnemyTiles} = DOM
     const youTiles = getYouTiles()
     const enemyTiles = getEnemyTiles()
     const getTile = (row, col, name) => {
@@ -264,11 +264,20 @@ const initGame = () => {
             renderSunk(res.player.around, 'enemy')
         }
         enemyBoard.classList.add('disable')
+
         if(res.enemy.hit){
+            enemyName.classList.remove('turn')
+            yourName.classList.add('turn')
             await renderEnemyAttack(res.enemy.hit)
+            enemyName.classList.add('turn')
+            yourName.classList.remove('turn')
         }
         if(res.enemy.around){
+            yourName.classList.add('turn')
+            enemyName.classList.remove('turn')
             await renderSunk(res.enemy.around, 'you')
+            enemyName.classList.add('turn')
+            yourName.classList.remove('turn')
         }
         enemyBoard.classList.remove('disable')
     }
@@ -277,6 +286,7 @@ const initGame = () => {
         hideAround()
         hideBtn()
         renderEnemyBoard()
+        enemyName.classList.add('turn')
         enemyTiles.forEach(tile => {
             tile.addEventListener('click', (e) => attack(e))
         })

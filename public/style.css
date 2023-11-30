@@ -187,3 +187,6 @@ footer{
 .disable{
   pointer-events: none;
 }
+.turn{
+  color: rgb(255, 85, 85);
+}
