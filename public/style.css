@@ -64,58 +64,58 @@ svg {
 }
 /* general styling */
 body {
-  font-family: 'Architects Daughter', cursive;
+  font-family: "Architects Daughter", cursive;
 }
-#app{
+#app {
   height: 100vh;
   display: grid;
   grid-template-rows: min-content max-content auto;
   margin: 0 8rem;
 }
-main{
+main {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-header > h1{
+header > h1 {
   font-size: 3rem;
   text-decoration: underline;
 }
 /* board sect */
-main > section{
+main > section {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-main > section > h2{
+main > section > h2 {
   font-size: 1.4rem;
 }
 /* BOARD */
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 30px); 
+  grid-template-columns: repeat(10, 30px);
   grid-template-rows: repeat(10, 30px);
   border: 1px solid #000;
   transition: border 500ms;
 }
 
 .tile {
-  width: 30px; 
+  width: 30px;
   height: 30px;
   border: 1px solid #000;
   box-sizing: border-box;
   cursor: pointer;
   transition: transform 100ms, border 100ms, background-color 100ms;
 }
-.tile:hover{
+.tile:hover {
   background-color: rgb(216, 255, 242);
 }
 /* button */
-.board-feat{
+.board-feat {
   margin-top: 1rem;
   display: flex;
   gap: 2rem;
 }
-.board-btn{
+.board-btn {
   padding: 0.3rem 0.7rem;
   border-radius: 1rem;
   border: 1px solid black;
@@ -123,14 +123,14 @@ main > section > h2{
   cursor: pointer;
   transition: transform 300ms, background-color 300ms;
 }
-.board-btn:hover{
+.board-btn:hover {
   transform: scale(0.97);
   background-color: rgb(157, 255, 222);
 }
-.board-btn:active{
+.board-btn:active {
   transform: scale(1.05);
 }
-.start-btn{
+.start-btn {
   padding: 0.5rem 1.5rem;
   border-radius: 1rem;
   cursor: pointer;
@@ -139,87 +139,87 @@ main > section > h2{
   font-size: 1.1rem;
   transition: transform 300ms, background-color 300ms;
 }
-.start-btn:hover{
+.start-btn:hover {
   background-color: rgb(118, 248, 161);
   transform: scale(0.97);
 }
-.start-btn:active{
+.start-btn:active {
   transform: scale(1.05);
 }
 /* footer */
-.ship-temp-cont{
+.ship-temp-cont {
   display: flex;
 }
-footer{
+footer {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.ship-temp{
+.ship-temp {
   background-color: rgb(112, 111, 111);
-  width: 30px; 
+  width: 30px;
   height: 30px;
   border: 1px solid #000;
   box-sizing: border-box;
   cursor: pointer;
 }
-.ship{
+.ship {
   background-color: rgb(112, 111, 111);
 }
-.around-show{
+.around-show {
   background-color: rgb(255, 186, 186);
 }
-.around-animation{
+.around-animation {
   background-color: rgb(255, 186, 186);
   transform: scale(1.1);
   border: 3px solid rgb(255, 75, 75);
 }
-.miss{
+.miss {
   background-color: rgb(61, 255, 190);
 }
-.hit{
+.hit {
   background-image: url(x_sign.png);
   background-size: cover;
 }
-.hide{
+.hide {
   display: none;
 }
-.disable{
+.disable {
   pointer-events: none;
 }
-.turn{
+.turn {
   color: rgb(255, 85, 85);
 }
-.win{
+.win {
   border: 6px solid rgb(76, 255, 100);
 }
-.lose{
+.lose {
   border: 6px solid rgb(255, 75, 75);
 }
-@media screen and (max-width: 1000px){
-  #app{
+@media screen and (max-width: 1000px) {
+  #app {
     margin: 0 auto;
   }
   header {
     margin-left: 3rem;
   }
 }
-@media screen and (max-width: 700px){
+@media screen and (max-width: 700px) {
   header {
     margin: 0 auto;
   }
-  main{
+  main {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }
-  .ship-temp-cont{
+  .ship-temp-cont {
     display: none;
   }
-  .ship-name{
+  .ship-name {
     display: none;
   }
-  footer{
+  footer {
     margin-top: 1rem;
   }
 }

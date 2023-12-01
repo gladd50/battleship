@@ -1,173 +1,181 @@
-import { Ship } from "./ship";
+import { Ship } from "./ship"
 
 const gameBoard = () => {
-    const board = []
-    let shipInBoard = 0
-    for (let i = 0; i < 10; i++) {
-        board[i] = []
-        for (let j = 0; j < 10; j++) {
-            board[i].push('0')
-        }
+  const board = []
+  let shipInBoard = 0
+  for (let i = 0; i < 10; i++) {
+    board[i] = []
+    for (let j = 0; j < 10; j++) {
+      board[i].push("0")
     }
-    const aroundShip = (row, col, dir, idx, aroundPos) => {
-        if (dir === 'v') {
-            if (idx === -1 || idx === -2) {
-                if (row >= 0 && row < 10) {
-                    board[row][col] = 'W';
-                    aroundPos.push({row,col})
-                }
-            }
-            if (col - 1 >= 0 && row >=0 && row < 10) {
-                board[row][col - 1] = 'W';
-                aroundPos.push({row,col: col - 1})
-            }
-            if (col + 1 < 10 && row >=0 && row < 10) {
-                board[row][col + 1] = 'W';
-                aroundPos.push({row,col: col + 1})
-            }
-        } else if (dir === 'h') {
-            if (idx === -1 || idx === -2) {
-                if (col >= 0 && col < 10) {
-                  board[row][col] = 'W';
-                  aroundPos.push({row,col})
-                }
-            }
-            if (row - 1 >= 0 && col >= 0 && col < 10) {
-                board[row - 1][col] = 'W';
-                aroundPos.push({row: row - 1,col})
-            }
-            if (row + 1 < 10 && col >= 0 && col < 10) {
-                board[row + 1][col] = 'W';
-                aroundPos.push({row: row + 1,col})
-            }
+  }
+  const aroundShip = (row, col, dir, idx, aroundPos) => {
+    if (dir === "v") {
+      if (idx === -1 || idx === -2) {
+        if (row >= 0 && row < 10) {
+          board[row][col] = "W"
+          aroundPos.push({ row, col })
         }
+      }
+      if (col - 1 >= 0 && row >= 0 && row < 10) {
+        board[row][col - 1] = "W"
+        aroundPos.push({ row, col: col - 1 })
+      }
+      if (col + 1 < 10 && row >= 0 && row < 10) {
+        board[row][col + 1] = "W"
+        aroundPos.push({ row, col: col + 1 })
+      }
+    } else if (dir === "h") {
+      if (idx === -1 || idx === -2) {
+        if (col >= 0 && col < 10) {
+          board[row][col] = "W"
+          aroundPos.push({ row, col })
+        }
+      }
+      if (row - 1 >= 0 && col >= 0 && col < 10) {
+        board[row - 1][col] = "W"
+        aroundPos.push({ row: row - 1, col })
+      }
+      if (row + 1 < 10 && col >= 0 && col < 10) {
+        board[row + 1][col] = "W"
+        aroundPos.push({ row: row + 1, col })
+      }
     }
-    const placeShip = (row, col, len, dir, isRandom = false, tempBoard = null) => {
-        if (dir === 'h' && col + len > 10) {
-            return 0
-        }
-        else if (dir === 'v' && row + len > 10) {
-            return 0
-        }
+  }
+  const placeShip = (
+    row,
+    col,
+    len,
+    dir,
+    isRandom = false,
+    tempBoard = null
+  ) => {
+    if (dir === "h" && col + len > 10) {
+      return 0
+    } else if (dir === "v" && row + len > 10) {
+      return 0
+    }
+    for (let i = col; i < col + len; i++) {
+      if (dir === "h" && board[row][i] !== "0") {
+        return 0
+      }
+    }
+    for (let i = row; i < row + len; i++) {
+      if (dir === "v" && board[i][col] !== "0") {
+        return 0
+      }
+    }
+    if (isRandom) {
+      if (dir === "h") {
         for (let i = col; i < col + len; i++) {
-            if (dir === 'h' && board[row][i] !== '0') {
-                return 0
-            }
+          tempBoard[row][i] = "Q"
         }
+      } else if (dir === "v") {
         for (let i = row; i < row + len; i++) {
-            if (dir === 'v' && board[i][col] !== '0') {
-                return 0
-            }
+          tempBoard[i][col] = "Q"
         }
-        if (isRandom) {
-            if (dir === 'h') {
-                for (let i = col; i < col + len; i++) {
-                    tempBoard[row][i] = 'Q'
-                }
-            } else if(dir === 'v'){
-                for (let i = row; i < row + len; i++) {
-                    tempBoard[i][col] = 'Q'
-                }
-            }
-            return true
-        }
-        let ship = Ship(len)
-        let shipIdx = 0
-        let aroundPos = []
-        const shipPos = []
-        if (dir === 'h') {
-            for (let i = col; i < col + len; i++) {
-                if (shipIdx === 0) {
-                    aroundShip(row, i - 1, dir, -1, aroundPos)
-                }
-                if(shipIdx === len - 1 ){
-                  aroundShip(row, i + 1, dir, -2, aroundPos)
-                }
-                board[row][i] = {ship, isHit: false}
-                shipPos.push({row, col : i})
-                aroundShip(row, i, dir, shipIdx, aroundPos)
-                shipIdx++
-            }
-        }
-        else if (dir === 'v') {
-            for (let i = row; i < row + len; i++) {
-                if (shipIdx === 0) {
-                    aroundShip(i - 1, col, dir, -1, aroundPos)
-                }
-                if(shipIdx === len - 1 ){
-                    aroundShip(i + 1, col, dir, -2, aroundPos)
-                }
-                board[i][col] = {ship, isHit: false}
-                shipPos.push({row : i, col})
-                aroundShip(i, col, dir, shipIdx, aroundPos)
-                shipIdx++
-            }
-        }
-        ship.aroundPos = aroundPos
-        shipInBoard++
-        return {shipPos, aroundPos}
+      }
+      return true
     }
-    const collaterallSunk = (row,col) => {
-        const around = board[row][col].ship.aroundPos
-        for (let i = 0; i < around.length; i++) {
-            board[around[i].row][around[i].col] = 'X'
+    let ship = Ship(len)
+    let shipIdx = 0
+    let aroundPos = []
+    const shipPos = []
+    if (dir === "h") {
+      for (let i = col; i < col + len; i++) {
+        if (shipIdx === 0) {
+          aroundShip(row, i - 1, dir, -1, aroundPos)
         }
-        return around
-    }
-    const receiveAttack = (row,col) => {
-        if (board[row][col] === 'X' || typeof board[row][col] == 'object' && board[row][col].isHit) {
-            return 'illegal'
-        }else if (typeof board[row][col] == 'object' && board[row][col].ship) {
-            board[row][col].isHit = true
-            board[row][col].ship.hit()
-            if (board[row][col].ship.isSunk()) {
-                return collaterallSunk(row,col)
-            }
-            return 'hit a ship'
-        } else{
-            board[row][col] = 'X'
-            return 'miss'
+        if (shipIdx === len - 1) {
+          aroundShip(row, i + 1, dir, -2, aroundPos)
         }
-    }
-    const isOver = () => {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                if (typeof board[i][j] == 'object' && !board[i][j].ship.isSunk()) {
-                    return false
-                }
-            }   
+        board[row][i] = { ship, isHit: false }
+        shipPos.push({ row, col: i })
+        aroundShip(row, i, dir, shipIdx, aroundPos)
+        shipIdx++
+      }
+    } else if (dir === "v") {
+      for (let i = row; i < row + len; i++) {
+        if (shipIdx === 0) {
+          aroundShip(i - 1, col, dir, -1, aroundPos)
         }
-        return true
-    }
-    const availableTiles = (len, dir) => {
-        let avaiTiles = [];
-        let tempBoard = JSON.parse(JSON.stringify(board)); 
-    
-        for (let row = 0; row < 10; row++) {
-            for (let col = 0; col < 10; col++) {
-                if (placeShip(row, col, len, dir, true, tempBoard) !== 0) {
-                    avaiTiles.push({ row, col });
-                }
-            }
+        if (shipIdx === len - 1) {
+          aroundShip(i + 1, col, dir, -2, aroundPos)
         }
-        return avaiTiles;
+        board[i][col] = { ship, isHit: false }
+        shipPos.push({ row: i, col })
+        aroundShip(i, col, dir, shipIdx, aroundPos)
+        shipIdx++
+      }
     }
-    const countShip = () => shipInBoard
-    const resetBoard = () => {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                board[i][j] = '0'
-            }
+    ship.aroundPos = aroundPos
+    shipInBoard++
+    return { shipPos, aroundPos }
+  }
+  const collaterallSunk = (row, col) => {
+    const around = board[row][col].ship.aroundPos
+    for (let i = 0; i < around.length; i++) {
+      board[around[i].row][around[i].col] = "X"
+    }
+    return around
+  }
+  const receiveAttack = (row, col) => {
+    if (
+      board[row][col] === "X" ||
+      (typeof board[row][col] == "object" && board[row][col].isHit)
+    ) {
+      return "illegal"
+    } else if (typeof board[row][col] == "object" && board[row][col].ship) {
+      board[row][col].isHit = true
+      board[row][col].ship.hit()
+      if (board[row][col].ship.isSunk()) {
+        return collaterallSunk(row, col)
+      }
+      return "hit a ship"
+    } else {
+      board[row][col] = "X"
+      return "miss"
+    }
+  }
+  const isOver = () => {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (typeof board[i][j] == "object" && !board[i][j].ship.isSunk()) {
+          return false
         }
+      }
     }
-    return{
-        board,
-        countShip,
-        availableTiles,
-        placeShip,
-        receiveAttack,
-        isOver,
-        resetBoard
+    return true
+  }
+  const availableTiles = (len, dir) => {
+    let avaiTiles = []
+    let tempBoard = JSON.parse(JSON.stringify(board))
+
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (placeShip(row, col, len, dir, true, tempBoard) !== 0) {
+          avaiTiles.push({ row, col })
+        }
+      }
     }
+    return avaiTiles
+  }
+  const countShip = () => shipInBoard
+  const resetBoard = () => {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        board[i][j] = "0"
+      }
+    }
+  }
+  return {
+    board,
+    countShip,
+    availableTiles,
+    placeShip,
+    receiveAttack,
+    isOver,
+    resetBoard,
+  }
 }
-export {gameBoard}
+export { gameBoard }
