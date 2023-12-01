@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/merry_go.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Battleship</title>
+    <script type="module" crossorigin src="/assets/index-EM5pyv3r.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>battleship</h1>
+      </header>
+      <main>
+        <section class="enemy">
+          <h2>Enemy's Board</h2>
+          <div class="board" id="enemy-board"></div>
+        </section>
+        <section class="you">
+          <h2>Your Board</h2>
+          <div class="board" id="you-board"></div>
+          <div class="board-feat">
+            <button class="board-btn" id="random-btn">Randomize Board</button>
+            <button class="board-btn" id="reset-btn">Reset Board</button>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <button class="start-btn hide">Start</button>
+        <div class="ship-temp-cont" draggable="true">
+          <div class="ship-temp" data-dir="h" data-len="5"></div>
+          <div class="ship-temp"></div>
+          <div class="ship-temp"></div>
+          <div class="ship-temp"></div>
+          <div class="ship-temp"></div>
+        </div>
+        <span class="ship-name">Carrier</span>
+      </footer>
+    </div>
+  </body>
+</html>
